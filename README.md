@@ -31,6 +31,9 @@ mysql -u root -p < data.sql
 # Run example queries
 mysql -u root -p < queries.sql
 ```
+EER diagram:
+<img width="1152" height="594" alt="erd" src="https://github.com/user-attachments/assets/d6912866-6615-41aa-b5fb-c3f4ad23448e" />
+
 
 ## Author
 Muhammad Qasim Akram
