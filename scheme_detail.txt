@@ -1,0 +1,124 @@
+=====================================
+   LOCAL SPARE PARTS DATABASE SCHEMA
+=====================================
+
+DATABASE localsparepartsdb
+
+1) Workers
+   - worker_id (PK)
+   - first_name
+   - last_name
+   - position
+   - dob
+   - salary
+   - shift
+   - expertise
+   - contact_info
+   - residency
+   Relationships
+      • One Worker can handle many Orders
+      • One Worker can have many WorkerPayments
+
+2) Products
+   - product_id (PK)
+   - product_name
+   - quantity
+   - price_per_piece
+   - quality
+   Relationships
+      • A Product can appear in many OrderDetails
+      • A Product can be part of many SupplyOrders
+
+3) Clients
+   - client_id (PK)
+   - client_name
+   - age
+   - contact_info
+   Relationships
+      • A Client can place many Orders
+      • ClientPayments are linked to Orders (and indirectly Clients)
+
+4) Orders
+   - order_id (PK)
+   - client_id (FK → Clients.client_id)
+   - worker_id (FK → Workers.worker_id)
+   - order_date
+   Relationships
+      • Each Order belongs to one Client
+      • Each Order is handled by one Worker
+      • One Order can have many OrderDetails
+      • One Order can have multiple ClientPayments
+
+5) OrderDetails
+   - order_detail_id (PK)
+   - order_id (FK → Orders.order_id)
+   - product_id (FK → Products.product_id)
+   - amount
+   Relationships
+      • Links Orders ↔ Products
+      • One Order can contain multiple Products
+
+6) ClientPayments
+   - cpayment_id (PK)
+   - order_id (FK → Orders.order_id)
+   - total_amount
+   - paid_amount
+   - remaining_amount
+   - payment_date
+   - payment_method
+   - status (Paid  Unpaid  Partially Paid)
+   Relationships
+      • Linked to Orders
+      • Helps track balances of Clients
+
+7) Suppliers
+   - supplier_id (PK)
+   - supplier_name
+   - contact_info
+   Relationships
+      • A Supplier can have many SupplyOrders
+
+8) SupplyOrders
+   - supply_order_id (PK)
+   - supplier_id (FK → Suppliers.supplier_id)
+   - product_id (FK → Products.product_id)
+   - quantity
+   - price_per_unit
+   - quality
+   Relationships
+      • Each SupplyOrder is provided by one Supplier
+      • Each SupplyOrder is for one Product
+      • SupplyOrders are linked to SupplierPayments
+
+9) SupplierPayments
+   - spayment_id (PK)
+   - supply_order_id (FK → SupplyOrders.supply_order_id)
+   - total_amount
+   - paid_amount
+   - payment_date
+   - payment_method
+   - status (Paid  Unpaid  Partially Paid)
+   Relationships
+      • Linked to SupplyOrders
+      • Tracks payments made to Suppliers
+
+10) WorkerPayments
+   - wpayment_id (PK)
+   - worker_id (FK → Workers.worker_id)
+   - amount
+   - payment_date
+   - payment_method
+   - status (Paid  Unpaid  Partially Paid)
+   Relationships
+      • Linked to Workers
+      • Tracks salary payments
+
+-------------------------------------
+RELATIONSHIP SUMMARY
+-------------------------------------
+• Clients ↔ Orders ↔ Workers
+• Orders ↔ OrderDetails ↔ Products
+• Orders ↔ ClientPayments
+• Suppliers ↔ SupplyOrders ↔ Products
+• SupplyOrders ↔ SupplierPayments
+• Workers ↔ WorkerPayments
